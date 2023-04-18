@@ -1,6 +1,6 @@
-[![Python](https://img.shields.io/badge/Python-3.9.13-blue?style=flat-square)](https://www.python.org/)
-[![Flask](https://img.shields.io/badge/Flask-2.2.3-orange?style=flat-square)](https://flask.palletsprojects.com/)
-[![SQLite Version](https://img.shields.io/badge/SQLite-3.39.3-blue.svg?style=flat-square)](https://www.sqlite.org/index.html)
+[![Python](https://img.shields.io/badge/Python-3.7.9-blue?style=flat-square)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-2.0.2-orange?style=flat-square)](https://flask.palletsprojects.com/)
+<!-- [![SQLite Version](https://img.shields.io/badge/SQLite-3.39.3-blue.svg?style=flat-square)](https://www.sqlite.org/index.html) -->
 
 # 💎 TechTrove
 TechTrove is a lightweight inventory and borrowing management application designed by and for tech enthusiasts and hobbyists. The app provides a hassle-free way to keep track of your tech inventory, monitor borrowed items, and manage orders.
