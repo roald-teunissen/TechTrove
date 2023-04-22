@@ -10,6 +10,10 @@ from   sys import exit
 
 from api_generator.commands import gen_api
 
+# Debugging extensions that allow for live debugging
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+
 from apps.config import config_dict
 from apps import create_app, db
 
@@ -26,21 +30,34 @@ try:
 
 except KeyError:
     exit('Error: Invalid <config_mode>. Expected values [Debug, Production] ')
+    
+def on_reload():
+    observer = Observer()
+
+    # Watch for changes in the static directory
+    observer.schedule(
+        FileSystemEventHandler(), 
+        path='static/', 
+        recursive=True
+    )
+
+    # Watch for changes in the templates directory
+    observer.schedule(
+        FileSystemEventHandler(), 
+        path='templates/', 
+        recursive=True
+    )
+
+    observer.start()
 
 app = create_app(app_config)
 Migrate(app, db)
 
 if not DEBUG:
     Minify(app=app, html=True, js=False, cssless=False)
-    
-if DEBUG:
-    app.logger.info('DEBUG            = ' + str(DEBUG)             )
-    app.logger.info('Page Compression = ' + 'FALSE' if DEBUG else 'TRUE' )
-    app.logger.info('DBMS             = ' + app_config.SQLALCHEMY_DATABASE_URI)
-    app.logger.info('ASSETS_ROOT      = ' + app_config.ASSETS_ROOT )
 
 for command in [gen_api, ]:
     app.cli.add_command(command)
     
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

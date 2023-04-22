@@ -10,6 +10,8 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from importlib import import_module
 
+from livereload import Server
+
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -58,4 +60,15 @@ def create_app(config):
     app.register_blueprint(github_blueprint, url_prefix="/login") 
     
     configure_database(app)
+    
+    if app.config['DEBUG']:
+        app.logger.info('DEBUG            = ' + str(app.config['DEBUG'])             )
+        app.logger.info('Page Compression = ' + 'FALSE' if app.config['DEBUG'] else 'TRUE' )
+        app.logger.info('DBMS             = ' + app.config['SQLALCHEMY_DATABASE_URI'])
+        app.logger.info('ASSETS_ROOT      = ' + app.config['ASSETS_ROOT'] )
+
+        server = Server(app.wsgi_app)
+        server.watch('**/*.*')
+        server.serve()
+
     return app
