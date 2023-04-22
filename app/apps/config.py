@@ -4,10 +4,15 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 import os, random, string
+from urllib.parse import urljoin
 
 class Config(object):
 
     basedir = os.path.abspath(os.path.dirname(__file__))
+
+    # API endpoint
+    API_PORT = 5000
+    API_ENDPOINT = os.environ.get('API_ENDPOINT', f'http://localhost:{API_PORT}/api/')
 
     # Assets Management
     ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets')
@@ -88,8 +93,7 @@ API_GENERATOR = {
     "product_categories": "ProductCategory",
     "vendors": "Vendor",
     "products": "Product",
-    "users": "User",
+    "users": "Users",
     "borrows": "Borrow",
     "orders": "Ordered",
 }
-

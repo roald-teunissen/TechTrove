@@ -5,6 +5,7 @@ from wtforms import StringField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired
 
 from apps.models import *
+from apps.authentication.models import Users
 
 ModelForm = model_form_factory(Form)
 
@@ -12,6 +13,12 @@ ModelForm = model_form_factory(Form)
 class BookForm(ModelForm):
     class Meta:
         model = Book
+        
+class UsersForm(ModelForm):
+    class Meta:
+        model = Users
+        exclude = ['password', 'oauth_github', 'api_token', 'api_token_ts']
+
 
 class ManufacturerForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
@@ -32,10 +39,6 @@ class ProductForm(FlaskForm):
     manufacturer = StringField('Manufacturer', validators=[DataRequired()])
     category = StringField('Category', validators=[DataRequired()])
     vendor = StringField('Vendor', validators=[DataRequired()])
-
-class UserForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired()])
 
 class BorrowForm(FlaskForm):
     product_id = IntegerField('Product ID', validators=[DataRequired()])
