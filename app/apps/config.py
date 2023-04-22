@@ -84,4 +84,12 @@ config_dict = {
 
 API_GENERATOR = {
     "books": "Book",
+    "manufacturers": "Manufacturer",
+    "product_categories": "ProductCategory",
+    "vendors": "Vendor",
+    "products": "Product",
+    "users": "User",
+    "borrows": "Borrow",
+    "orders": "Ordered",
 }
+
