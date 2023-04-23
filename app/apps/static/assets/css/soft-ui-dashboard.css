@@ -19180,6 +19180,12 @@ hr.horizontal.gray-light {
 .navbar-vertical .navbar-nav .nav-link .icon {
   padding: 10px;
 }
+.navbar-vertical .navbar-nav .nav-link .icon svg{
+  color:#f8f9fa;
+}
+.navbar-vertical .navbar-nav .nav-link:not(.active) .icon svg{
+  color:#3a416f;
+}
 .navbar-vertical .navbar-nav .nav-sm .nav-link {
   font-size: 0.8125rem;
 }
@@ -19209,7 +19215,6 @@ hr.horizontal.gray-light {
 .navbar-vertical.navbar-expand-xs .navbar-collapse {
   display: block;
   overflow: auto;
-  height: calc(100vh - 360px);
 }
 .navbar-vertical.navbar-expand-xs > [class*=container] {
   flex-direction: column;
