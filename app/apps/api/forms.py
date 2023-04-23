@@ -9,10 +9,6 @@ from apps.authentication.models import Users
 
 ModelForm = model_form_factory(Form)
 
-
-class BookForm(ModelForm):
-    class Meta:
-        model = Book
         
 class UsersForm(ModelForm):
     class Meta:
