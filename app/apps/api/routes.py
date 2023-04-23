@@ -24,4 +24,43 @@ class UsersRoute(Resource):
                 'data': output,
                 'success': True
             }, 200
-            
+        
+@api.route('/product/', methods=['GET'])
+class ProductRoute(Resource):
+    def get(self):
+        all_objects = Product.query.all()
+        output = [{'id': obj.id, **ProductForm(obj=obj).data} for obj in all_objects]
+        return {
+                'data': output,
+                'success': True
+            }, 200
+        
+@api.route('/manufacturer/', methods=['GET'])
+class ManufacturerRoute(Resource):
+    def get(self):
+        all_objects = Manufacturer.query.all()
+        output = [{'id': obj.id, **ManufacturerForm(obj=obj).data} for obj in all_objects]
+        return {
+                'data': output,
+                'success': True
+            }, 200
+        
+@api.route('/ordered/', methods=['GET'])
+class OrderedRoute(Resource):
+    def get(self):
+        all_objects = Ordered.query.all()
+        output = [{'id': obj.id, **OrderedForm(obj=obj).data} for obj in all_objects]
+        return {
+                'data': output,
+                'success': True
+            }, 200
+        
+@api.route('/vendor/', methods=['GET']) 
+class VendorRoute(Resource):
+    def get(self):
+        all_objects = Vendor.query.all()
+        output = [{'id': obj.id, **VendorForm(obj=obj).data} for obj in all_objects]
+        return {
+                'data': output,
+                'success': True
+            }, 200

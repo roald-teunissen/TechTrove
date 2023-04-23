@@ -14,47 +14,68 @@ from jinja2 import TemplateNotFound
 import http
 from datetime import datetime
 
+
 @blueprint.route('/index')
 @login_required
 def index():
     return render_template('home/index.html', segment='index', API_GENERATOR=len(API_GENERATOR))
 
+def get_vendors_data(data):
+    all_vendors = data['data']
+    vendor_count = len(all_vendors)
+    # product_data = requests.get(url=urljoin(current_app.config["API_ENDPOINT"], 'product')).json()['data']
+    
+    # join vendor data with product data
+    # print(type(product_data))
+    # print(data)
+    # print(type(data[0]))
+    # request product data and join with vendor data
+    # product = requests.get(url=urljoin(current_app.config["API_ENDPOINT"], 'product'))
+    
+    # return render_template("home/" + template, 
+    #                     segment=get_segment(request), 
+    #                     API_GENERATOR=API_GENERATOR, 
+    #                     model=model_name, 
+    #                     template=template, 
+    #                     data=result)
+    print('vendor_count:', vendor_count)
+    return {'all_vendors': all_vendors, 'vendor_count': vendor_count}
+
+def get_manufacturers_data(data):
+    return data
+
+def get_users_data(data):
+    return data
+
+template_data_functions = {
+    'vendor': get_vendors_data,
+    'manufacturer': get_manufacturers_data,
+    'users': get_users_data,
+}
 
 @blueprint.route('/<template>')
 # @login_required
 def route_template(template):
     try:
-        model = None
-        if not template.endswith('.html'):
-            model = template
-            template += '.html'
-        else:
-            model = template.split('.')[0]
-            
-        # Detect the current page
-        segment = get_segment(request)
+        model_name = template if not template.endswith('.html') else template[:-5]
+        api_url = urljoin(current_app.config["API_ENDPOINT"], model_name)
 
-        # Find the key based on the value in API_GENERATOR
-        key = 'users'
-
-        # Request data from API
-        api_endpoint = current_app.config["API_ENDPOINT"]
-        api_url = urljoin(api_endpoint, key)
-        
         try:
-            response = requests.get(api_url, timeout=1)
+            response = requests.get(url=api_url, timeout=1)
             response.raise_for_status()
+            
+            # Convert timestamp to datetime for created_at and updated_at
             result = response.json()
             for item in result['data']:
-                for key in ['created_at_ts', 'updated_at_ts']:
-                    item[key[:-2] + 'dt'] = datetime.fromtimestamp(item[key]).strftime('%Y-%m-%d %H:%M')
+                if 'created_at_ts' in item and 'updated_at_ts' in item:
+                        item['created_at_dt'] = datetime.fromtimestamp(item['created_at_ts']).strftime('%Y-%m-%d %H:%M')
+                        item['created_at_dt'] = datetime.fromtimestamp(item['updated_at_ts']).strftime('%Y-%m-%d %H:%M')
+
+            # Call child function to add more data
+            result = template_data_functions[model_name](result)
             
-            return render_template("home/" + template, 
-                                   segment=segment, 
-                                   API_GENERATOR=API_GENERATOR, 
-                                   model=model, 
-                                   template=template, 
-                                   data=result.get('data'))
+            return render_template("home/" + template, data=result)
+            
         except requests.exceptions.HTTPError as error:
             status_code = error.response.status_code
         except requests.exceptions.ConnectionError:
@@ -71,9 +92,6 @@ def route_template(template):
 
     except TemplateNotFound:
         return render_template('home/page-error.html', status_code=404, status_text=http.HTTPStatus(404).phrase), 404
-
-    # except:
-        # return render_template('home/page-500.html'), 500
 
 
 # Helper - Extract current page name from request
