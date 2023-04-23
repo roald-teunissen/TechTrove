@@ -12,6 +12,7 @@ from flask import current_app, flash, render_template, request
 from flask_login import login_required
 from jinja2 import TemplateNotFound
 import http
+from datetime import datetime
 
 @blueprint.route('/index')
 @login_required
@@ -35,11 +36,6 @@ def route_template(template):
 
         # Find the key based on the value in API_GENERATOR
         key = 'users'
-        # key = [key for key, value in API_GENERATOR.items() if value == model][0]
-        
-        g_resp = requests.get('https://www.google.com')
-        print(f'Response code: {g_resp.status_code}')
-
 
         # Request data from API
         api_endpoint = current_app.config["API_ENDPOINT"]
@@ -48,13 +44,17 @@ def route_template(template):
         try:
             response = requests.get(api_url, timeout=1)
             response.raise_for_status()
-            data = response.json()
+            result = response.json()
+            for item in result['data']:
+                for key in ['created_at_ts', 'updated_at_ts']:
+                    item[key[:-2] + 'dt'] = datetime.fromtimestamp(item[key]).strftime('%Y-%m-%d %H:%M')
+            
             return render_template("home/" + template, 
                                    segment=segment, 
                                    API_GENERATOR=API_GENERATOR, 
                                    model=model, 
                                    template=template, 
-                                   data=data)
+                                   data=result.get('data'))
         except requests.exceptions.HTTPError as error:
             status_code = error.response.status_code
         except requests.exceptions.ConnectionError:
