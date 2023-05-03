@@ -91,7 +91,7 @@ API_GENERATOR = {
     "manufacturers": "Manufacturer",
     "product_categories": "ProductCategory",
     "vendors": "Vendor",
-    "products": "Product",
+    "product": "Product",
     "users": "Users",
     "borrows": "Borrow",
     "orders": "Ordered",

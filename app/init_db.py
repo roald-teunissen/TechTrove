@@ -162,7 +162,7 @@ def log_database():
     with app.app_context():
         print(f"{'Model':<15}{'Count':>10}")
         print('-' * 25)
-        for model in [Vendor, ProductCategory, Manufacturer, Product, Ordered]:
+        for model in [Vendor, ProductCategory, Manufacturer, Product, Ordered, Borrowed]:
             count = model.query.count()
             print(f"{model.__name__:<15}{count:>10}")
 
