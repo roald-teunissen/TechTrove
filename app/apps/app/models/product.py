@@ -24,11 +24,11 @@ class Product(db.Model):
     updated_at_ts = db.Column(db.Integer, default=int(datetime.now().timestamp()), onupdate=int(datetime.now().timestamp()))
 
     # Foreign keys
-    manufacturer_id = db.Column(db.Integer, db.ForeignKey('Manufacturer.id'), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('ProductCategory.id'), nullable=False)
-    vendor_id = db.Column(db.Integer, db.ForeignKey('Vendor.id'), nullable=False)
+    manufacturer_id = db.Column(db.Integer, db.ForeignKey('manufacturer.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('productCategory.id'), nullable=False)
+    vendor_id = db.Column(db.Integer, db.ForeignKey('vendor.id'), nullable=False)
 
     # Relationships
-    manufacturer = db.relationship('Manufacturer', backref='products')
-    category = db.relationship('ProductCategory', backref='products')
-    vendor = db.relationship('Vendor', backref='products')
+    manufacturer = db.relationship('Manufacturer', backref='product')
+    category = db.relationship('ProductCategory', backref='product')
+    vendor = db.relationship('Vendor', backref='product')
