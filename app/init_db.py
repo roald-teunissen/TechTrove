@@ -5,7 +5,7 @@ import subprocess
 
 from apps import create_app, db
 from apps.config import config_dict
-from apps.models import Manufacturer, Product, ProductCategory, Vendor, Ordered, Borrowed
+from apps.webapp.models import Manufacturer, Product, ProductCategory, Vendor, Ordered, Borrowed
 
 def create_and_return_app(config_mode):
     app_config = config_dict[config_mode.capitalize()]

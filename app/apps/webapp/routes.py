@@ -7,7 +7,7 @@ from urllib.parse import urljoin
 
 import requests
 from apps.config import API_GENERATOR
-from apps.app import blueprint
+from apps.webapp import blueprint
 from flask import current_app, flash, render_template, request
 from flask_login import login_required
 from jinja2 import TemplateNotFound
@@ -23,10 +23,12 @@ def index():
 @blueprint.route('/<template>')
 # @login_required
 def route_template(template):
+    print('route_template: ', template)
     try:
         model_name = template if not template.endswith('.html') else template[:-5]
         try:
             api_url = urljoin(current_app.config["API_ENDPOINT"], model_name)
+            print('yup:', api_url)
             response = requests.get(url=api_url, timeout=1)
             response.raise_for_status()
             

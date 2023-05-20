@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired
 
-from apps.models import *
+from apps.webapp.models import *
 from apps.authentication.models import Users
 
 ModelForm = model_form_factory(Form)

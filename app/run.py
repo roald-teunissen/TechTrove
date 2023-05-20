@@ -2,6 +2,7 @@
 """
 Copyright (c) 2019 - present AppSeed.us
 """
+from pprint import pprint
 
 import os
 from   flask_migrate import Migrate
@@ -60,4 +61,10 @@ for command in [gen_api, ]:
     app.cli.add_command(command)
     
 if __name__ == '__main__':
+    
+    with app.app_context():
+        for rule in app.url_map.iter_rules():
+            if rule.endpoint != 'static':
+                print(rule.endpoint)
+                
     app.run()

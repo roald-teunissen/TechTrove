@@ -41,7 +41,7 @@ def login_github():
         return redirect(url_for("github.login"))
 
     res = github.get("/user")
-    return redirect(url_for('app_blueprint.index'))
+    return redirect(url_for('webapp_blueprint.index'))
 
 @blueprint.route('/login', methods=['GET', 'POST'])
 def login():
@@ -69,7 +69,7 @@ def login():
                                form=login_form)
 
     if current_user.is_authenticated:
-        return redirect(url_for('app_blueprint.index'))
+        return redirect(url_for('webapp_blueprint.index'))
     else:
         return render_template('accounts/login.html',
                                form=login_form) 
