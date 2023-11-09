@@ -21,7 +21,7 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    for module_name in ('authentication', 'home', 'api'):
+    for module_name in ('authentication', 'webapp', 'api'):
         module = import_module('apps.{}.routes'.format(module_name))
         app.register_blueprint(module.blueprint)
 
@@ -51,6 +51,7 @@ from apps.authentication.oauth import github_blueprint
 
 def create_app(config):
     app = Flask(__name__)
+
     app.config.from_object(config)
     register_extensions(app)
     register_blueprints(app)
@@ -58,4 +59,11 @@ def create_app(config):
     app.register_blueprint(github_blueprint, url_prefix="/login") 
     
     configure_database(app)
+    
+    if app.config['DEBUG']:
+        app.logger.info('DEBUG            = ' + str(app.config['DEBUG'])             )
+        app.logger.info('Page Compression = ' + 'FALSE' if app.config['DEBUG'] else 'TRUE' )
+        app.logger.info('DBMS             = ' + app.config['SQLALCHEMY_DATABASE_URI'])
+        app.logger.info('ASSETS_ROOT      = ' + app.config['ASSETS_ROOT'] )
+        
     return app

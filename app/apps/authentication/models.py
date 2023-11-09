@@ -3,6 +3,7 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+from datetime import datetime
 from flask_login import UserMixin
 
 from sqlalchemy.orm import relationship
@@ -25,6 +26,8 @@ class Users(db.Model, UserMixin):
 
     api_token     = db.Column(db.String(100))
     api_token_ts  = db.Column(db.Integer)    
+    created_at_ts = db.Column(db.Integer, default=int(datetime.now().timestamp()))
+    updated_at_ts = db.Column(db.Integer, default=int(datetime.now().timestamp()), onupdate=int(datetime.now().timestamp()))
 
     def __init__(self, **kwargs):
         for property, value in kwargs.items():
